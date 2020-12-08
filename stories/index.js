@@ -16,6 +16,7 @@ import Header from "components/Appointment/Header";
 import Empty from "components/Appointment/Empty";
 import Show from "components/Appointment/Show";
 import Delete from "components/Appointment/Delete";
+import Status from "components/Appointment/Status";
 
 storiesOf("Button", module)
   .addParameters({
@@ -135,7 +136,7 @@ storiesOf("Button", module)
 
         storiesOf("Appointment", module)
           .addParameters({
-            backgrounds: [{name: "white", value: "#fff", default: true}]
+            backgrounds: [{name: "white", value: "#d2cbcb", default: true}]
           })
           .add("Appointment", () => <Appointment />)
           .add("Appointment with Time...", () => <Appointment time = "12pm" />)
@@ -155,4 +156,5 @@ storiesOf("Button", module)
            onConfirm = {action("onConfirm")}
            onCancel = {action("onCancel")}
            />
-          ));
+          ))
+          .add("Status", () => <Status message = "Deleting..."/>);
