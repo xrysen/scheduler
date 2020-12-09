@@ -1,6 +1,5 @@
 import React from "react";
 import Button from "components/Button";
-import "./styles.scss";
 
 export default function Delete(props) {
   return (
