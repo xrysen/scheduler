@@ -1,4 +1,4 @@
-export default function getAppointmentsForDay(state, day) {
+function getAppointmentsForDay(state, day) {
   let appointmentKeys = "";
   if (state.appointments) {
     appointmentKeys = Object.keys(state.appointments);
@@ -20,3 +20,17 @@ export default function getAppointmentsForDay(state, day) {
   }
   return result;
 }
+
+function getInterview(state, interview) {
+  let result = {};
+
+  if (!interview) {
+    return null;
+  }
+
+  const interviewer = state.interviewers[interview.interviewer];
+  result = { ...interview, interviewer: interviewer };
+  return result;
+}
+
+export { getAppointmentsForDay, getInterview };
