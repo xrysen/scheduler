@@ -6,6 +6,7 @@ import DayList from "components/DayList";
 import Appointment from "components/Appointment";
 import {
   getAppointmentsForDay,
+  getInterview,
   getInterviewersForDay,
 } from "helpers/selectors";
 
@@ -25,6 +26,7 @@ export default function Application() {
       <Appointment
         key={apt.id}
         {...apt}
+        interview = {getInterview(state, apt.interview)}
         interviewers={interviewers}
         bookInterview={bookInterview}
         cancelInterview={cancelInterview}

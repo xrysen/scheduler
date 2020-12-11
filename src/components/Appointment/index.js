@@ -48,15 +48,6 @@ export default function Appointment(props) {
     });
   }
 
-  let interviewerName = "";
-  if (props.interview) {
-    for (const key of props.interviewers) {
-      if (key.id === props.interview.interviewer) {
-        interviewerName = key.name;
-      }
-    }
-  }
-
   return (
     <article className="appointment">
       <Header time={props.time} />
@@ -79,7 +70,7 @@ export default function Appointment(props) {
       {mode === SHOW && (
         <Show
           student={props.interview.student}
-          interviewer={interviewerName}
+          interviewer={props.interview.interviewer.name}
           onDelete={() => transition(DELETE)}
           onEdit={() => transition(EDIT)}
         />
@@ -91,7 +82,7 @@ export default function Appointment(props) {
         <Form
           name={props.interview.student}
           interviewers={props.interviewers}
-          interviewer={props.interview.interviewer}
+          interviewer={props.interview.interviewer.id}
           onCancel={back}
           onSave={save}
         />
