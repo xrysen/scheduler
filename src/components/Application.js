@@ -4,38 +4,67 @@ import axios from "axios";
 import "components/Application.scss";
 import DayList from "components/DayList";
 import Appointment from "components/Appointment";
-import {getAppointmentsForDay} from "helpers/selectors";
+import {
+  getAppointmentsForDay,
+  getInterviewersForDay,
+} from "helpers/selectors";
 
 export default function Application() {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
     appointments: {},
-    interviewers: {}
+    interviewers: {},
   });
 
   const setDay = (day) => setState({ ...state, day });
 
   useEffect(() => {
-    Promise.all([axios.get("/api/days"), axios.get("/api/appointments"), axios.get("api/interviewers")]).then(
-      (res) => {
-        setState((prev) => ({
-          ...prev,
-          days: res[0].data,
-          appointments: res[1].data,
-          interviewers: res[2].data
-        }));
-      }
-    );
+    Promise.all([
+      axios.get("/api/days"),
+      axios.get("/api/appointments"),
+      axios.get("api/interviewers"),
+    ]).then((res) => {
+      setState((prev) => ({
+        ...prev,
+        days: res[0].data,
+        appointments: res[1].data,
+        interviewers: res[2].data,
+      }));
+    });
   }, []);
 
-  console.log(state.interviewers);
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
 
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    setState({
+      ...state,
+      appointments
+    });
+
+    console.log(id, interview);
+  }
+  
   const dailyAppointments = getAppointmentsForDay(state, state.day);
+  const interviewers = getInterviewersForDay(state, state.day);
 
   const appointment = dailyAppointments.map((apt) => {
-    // const interview = getInterview(state, apt.interview);
-    return <Appointment key={apt.id} {...apt} />;
+    return (
+      <Appointment
+        key={apt.id}
+        {...apt}
+        interviewers={interviewers}
+        bookInterview={bookInterview}
+      />
+    );
   });
 
   return (
