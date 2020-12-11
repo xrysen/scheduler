@@ -45,11 +45,11 @@ export default function Application() {
       [id]: appointment,
     };
 
-    axios.put(`/api/appointments/${id}`, appointment);
-
-    setState({
-      ...state,
-      appointments,
+    return axios.put(`/api/appointments/${id}`, appointment).then(() => {
+      setState({
+        ...state,
+        appointments,
+      });
     });
   }
 
