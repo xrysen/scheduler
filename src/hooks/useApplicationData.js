@@ -22,8 +22,9 @@ export default function useApplicationData() {
         interviewers: res[2].data,
       }));
     });
-  }, []);
+  }, [state.appointments]);
 
+  
   const setDay = (day) => setState({ ...state, day });
 
   const bookInterview = (id, interview) => {
