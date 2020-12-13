@@ -39,7 +39,11 @@ export default function useApplicationData() {
     return days;
   };
 
-  const bookInterview = (id, interview) => {
+  const bookInterview = (id, interview, mode) => {
+    let days = state.days;
+    if(mode === "CREATE") {
+      days = updateSpots(state.day, "subract");
+    } 
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
@@ -51,7 +55,6 @@ export default function useApplicationData() {
     };
 
     return axios.put(`/api/appointments/${id}`, appointment).then(() => {
-      const days = updateSpots("Monday", "subtract");
       setState({
         ...state,
         days,
