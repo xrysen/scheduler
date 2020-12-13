@@ -27,13 +27,16 @@ export default function useApplicationData() {
   const setDay = (day) => setState({ ...state, day });
 
   const updateSpots = (day, action) => {
-    const index = state.days.findIndex((x) => x.name === day);
-    const dayInQuestion = [...state.days];
+    const days = JSON.parse(JSON.stringify(state.days));
+    const index = days.findIndex((item) => item.name === day);
+
     if (action === "add") {
-      dayInQuestion[index].spots += 1;
+      days[index].spots += 1;
     } else {
-      dayInQuestion[index].spots -= 1;
+      days[index].spots -= 1;
     }
+
+    return days;
   };
 
   const bookInterview = (id, interview) => {
@@ -48,9 +51,10 @@ export default function useApplicationData() {
     };
 
     return axios.put(`/api/appointments/${id}`, appointment).then(() => {
-      updateSpots(state.day, "substract");
+      const days = updateSpots("Monday", "subtract");
       setState({
         ...state,
+        days,
         appointments,
       });
     });
@@ -68,9 +72,10 @@ export default function useApplicationData() {
     };
 
     return axios.delete(`/api/appointments/${id}`, appointment).then(() => {
-      updateSpots(state.day, "add");
+     const days = updateSpots(state.day, "add");
       setState({
         ...state,
+        days,
         appointments,
       });
     });
