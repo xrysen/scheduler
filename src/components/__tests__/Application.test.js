@@ -10,8 +10,10 @@ import {
   getByPlaceholderText,
   getByAltText,
   queryByText,
-  getAllByText,
+  waitForElementToBeRemoved,
 } from "@testing-library/react";
+
+import axios from "axios";
 
 import Application from "components/Application";
 import { fireEvent } from "@testing-library/react/dist";
@@ -92,14 +94,42 @@ describe("Application", () => {
     await waitForElement(() => getByAltText(appointment, "Sylvia Palmer"));
 
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
+    fireEvent.change(getByPlaceholderText(appointment, /enter student name/i), {
+      target: { value: "Lydia Miller-Jones" },
+    });
     fireEvent.click(getByText(appointment, "Save"));
 
     expect(getByText(appointment, "Saving...")).toBeInTheDocument();
-    
-    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+    await waitForElement(() => getByText(container, "Lydia Miller-Jones"));
     const day = getAllByTestId(container, "day").find((day) =>
       queryByText(day, "Monday")
     );
     expect(getByText(day, "1 spot remaining"));
   });
+
+  it("Shows the save error when failing to save an appointment", async () => {
+    const { container } = render(<Application />);
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+    const appointment = getAllByTestId(container, "appointment").find(ele => queryByText(ele, "Archie Cohen"));
+
+    fireEvent.click(getByAltText(appointment, "Edit"));
+    axios.put.mockRejectedValue();
+    fireEvent.click(getByText(appointment, "Save"));
+
+    await waitForElementToBeRemoved(() => queryByText(appointment, "Saving..."));
+    expect(getByText(appointment, "There was an error while saving your request")).toBeInTheDocument();
+  });
+
+  it("shows the delete error when failing to save an appointment", async () => {
+    const { container } = render(<Application />);
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+    const appointment = getAllByTestId(container, "appointment").find(ele => queryByText(ele, "Archie Cohen"));
+    axios.delete.mockRejectedValue();
+    fireEvent.click(getByAltText(appointment, "Delete"));
+    fireEvent.click(getByText(appointment, "Confirm"));
+
+    await waitForElementToBeRemoved(() => queryByText(appointment, "Deleting..."));
+    expect(getByText(appointment, "There was an error while deleting your interview")).toBeInTheDocument();
+  })
 });
