@@ -10,6 +10,7 @@ import {
   getByPlaceholderText,
   getByAltText,
   queryByText,
+  getAllByText,
 } from "@testing-library/react";
 
 import Application from "components/Application";
@@ -77,7 +78,28 @@ describe("Application", () => {
       queryByText(day, "Monday")
     );
     expect(getByText(day, "2 spots remaining"));
+  });
 
-    console.log(prettyDOM(appointment));
+  it("loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
+    const { container } = render(<Application />);
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+    const appointment = getAllByTestId(container, "appointment").find((ele) =>
+      queryByText(ele, "Archie Cohen")
+    );
+    fireEvent.click(getByAltText(appointment, "Edit"));
+
+    await waitForElement(() => getByAltText(appointment, "Sylvia Palmer"));
+
+    fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
+    fireEvent.click(getByText(appointment, "Save"));
+
+    expect(getByText(appointment, "Saving...")).toBeInTheDocument();
+    
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+    const day = getAllByTestId(container, "day").find((day) =>
+      queryByText(day, "Monday")
+    );
+    expect(getByText(day, "1 spot remaining"));
   });
 });
