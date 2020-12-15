@@ -30,32 +30,42 @@ export default function Appointment(props) {
       interviewer,
     };
     transition(SAVING);
-    props.bookInterview(props.id, interview, mode).then(() => {
-      transition(SHOW);
-    })
-    .catch(() => {
-      transition(ERROR_SAVE, true);
-    });
+    props
+      .bookInterview(props.id, interview, mode)
+      .then(() => {
+        transition(SHOW);
+      })
+      .catch(() => {
+        transition(ERROR_SAVE, true);
+      });
   }
 
   function deleteInterview() {
     transition(DELETING, true);
-    props.cancelInterview(props.id, props.interview).then(() => {
-      transition(EMPTY);
-    })
-    .catch(() => {
-      transition(ERROR_DELETE, true);
-    });
+    props
+      .cancelInterview(props.id, props.interview)
+      .then(() => {
+        transition(EMPTY);
+      })
+      .catch(() => {
+        transition(ERROR_DELETE, true);
+      });
   }
 
   return (
-    <article className="appointment">
+    <article className="appointment" data-testid="appointment">
       <Header time={props.time} />
       {mode === ERROR_SAVE && (
-        <Error message = "There was an error while saving your request" onClose = {back}/>
+        <Error
+          message="There was an error while saving your request"
+          onClose={back}
+        />
       )}
       {mode === ERROR_DELETE && (
-        <Error message = "There was an error while deleting your interview" onClose = {back}/>
+        <Error
+          message="There was an error while deleting your interview"
+          onClose={back}
+        />
       )}
       {mode === DELETE && (
         <Delete
