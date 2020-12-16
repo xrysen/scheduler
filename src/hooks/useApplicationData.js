@@ -94,7 +94,7 @@ export default function useApplicationData() {
    *  number id
    * Output:
    *  Updates the value of state.appointments of the id passed in to null, making a request to the server to update the database. Effectively deleting an interview
-   * It will also update the remaining spots available for the current day and timeslot selected.
+   * It will also update the remaining spots available for the current day selected.
    */
 
   const cancelInterview = (id) => {
