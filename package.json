@@ -2,7 +2,7 @@
   "name": "scheduler",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8001",
+  "proxy": "https://seanoyler-scheduler.herokuapp.com/",
   "dependencies": {
     "axios": "^0.21.0",
     "classnames": "^2.2.6",
