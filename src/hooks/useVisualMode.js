@@ -2,8 +2,7 @@ import { useState } from "react";
 
 /**
  * useVisualNode(state)
- * Custom React Hook that updates the visual state the app is currently in. Allows for ease of transition between, Save, Edit and Delete components
- *  
+ * Custom React Hook that updates the visual state the app is currently in. Allows for ease of transition between, Save, Edit and Delete components 
  */
 
 export default function useVisualMode(initial) {

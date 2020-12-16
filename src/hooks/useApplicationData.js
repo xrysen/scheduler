@@ -3,7 +3,7 @@ import axios from "axios";
 
 /**
  * useApplicationData()
- * Sets the initial state and also updates the state depending on the users actions
+ * Custom hook that sets the initial state and also updates the state (and database) depending on the users actions
  */
 
 export default function useApplicationData() {
