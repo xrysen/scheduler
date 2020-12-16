@@ -90,6 +90,6 @@ export default {
     return Promise.resolve({
       status: 200,
       statusText: "No content",
-    })
-  })
+    });
+  }),
 };

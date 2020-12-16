@@ -111,25 +111,37 @@ describe("Application", () => {
   it("Shows the save error when failing to save an appointment", async () => {
     const { container } = render(<Application />);
     await waitForElement(() => getByText(container, "Archie Cohen"));
-    const appointment = getAllByTestId(container, "appointment").find(ele => queryByText(ele, "Archie Cohen"));
+    const appointment = getAllByTestId(container, "appointment").find((ele) =>
+      queryByText(ele, "Archie Cohen")
+    );
 
     fireEvent.click(getByAltText(appointment, "Edit"));
     axios.put.mockRejectedValue();
     fireEvent.click(getByText(appointment, "Save"));
 
-    await waitForElementToBeRemoved(() => queryByText(appointment, "Saving..."));
-    expect(getByText(appointment, "There was an error while saving your request")).toBeInTheDocument();
+    await waitForElementToBeRemoved(() =>
+      queryByText(appointment, "Saving...")
+    );
+    expect(
+      getByText(appointment, "There was an error while saving your request")
+    ).toBeInTheDocument();
   });
 
   it("shows the delete error when failing to save an appointment", async () => {
     const { container } = render(<Application />);
     await waitForElement(() => getByText(container, "Archie Cohen"));
-    const appointment = getAllByTestId(container, "appointment").find(ele => queryByText(ele, "Archie Cohen"));
+    const appointment = getAllByTestId(container, "appointment").find((ele) =>
+      queryByText(ele, "Archie Cohen")
+    );
     axios.delete.mockRejectedValue();
     fireEvent.click(getByAltText(appointment, "Delete"));
     fireEvent.click(getByText(appointment, "Confirm"));
 
-    await waitForElementToBeRemoved(() => queryByText(appointment, "Deleting..."));
-    expect(getByText(appointment, "There was an error while deleting your interview")).toBeInTheDocument();
-  })
+    await waitForElementToBeRemoved(() =>
+      queryByText(appointment, "Deleting...")
+    );
+    expect(
+      getByText(appointment, "There was an error while deleting your interview")
+    ).toBeInTheDocument();
+  });
 });
