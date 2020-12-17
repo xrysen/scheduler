@@ -5,7 +5,6 @@ import {
   cleanup,
   waitForElement,
   getByText,
-  prettyDOM,
   getAllByTestId,
   getByPlaceholderText,
   getByAltText,
